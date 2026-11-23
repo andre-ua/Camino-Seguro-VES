@@ -1,6 +1,6 @@
 """
 Convierte data/delitos.db (SQLite de SIDPOL VES) en puntos.js
-para que index.html muestre los registros reales agrupados por nodo.
+para que index.html muestre los 4,048 registros reales agrupados por nodo.
 """
 import json, math, os, sqlite3, sys
 
@@ -46,6 +46,7 @@ for tabla in tablas:
         sel_cat = c_cat if c_cat else "'ROBO'"
         sel_turno = c_turno if c_turno else "'noche'"
 
+        # Agrupa denuncias cercanas (~11 metros) para formar nodos de riesgo limpios
         filas = con.execute(f"""
             SELECT ROUND(lat, 4), ROUND(lon, 4), {sel_cat}, {sel_turno}, COUNT(*)
               FROM {tabla}
