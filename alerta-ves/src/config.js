@@ -2,7 +2,7 @@
 // está en las reglas RLS de Supabase (supabase/setup.sql). NUNCA pongas aquí la clave service_role / secret.
 export const SUPABASE_URL = 'https://jfpgzosemzvmfdqlfqye.supabase.co';
 export const SUPABASE_ANON_KEY = 'sb_publishable_5E2FwVpluhXAkQoFfs1PGg_AmU7P6ZH';
-export const TM_MODEL_URL = 'https://teachablemachine.withgoogle.com/models/c-CCBOyoGy/'; // con "/" al final
+export const TM_MODEL_URL = 'https://teachablemachine.withgoogle.com/models/v3xV8MdQM/'; // con "/" al final
 
 export const UMBRAL = 0.85;           // confianza mínima de la IA para aceptar un reporte
 export const VIGENCIA_MIN = 30;       // un reporte vive 30 minutos
