@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Camino Seguro VES · Alerta Ciudadana</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="marca">
+      <h1>Camino Seguro VES <span class="badge">Hackatón · v2</span></h1>
+      <p>Haz clic en el radar o usa las flechas del teclado para simular tu recorrido en Villa El Salvador.</p>
+    </div>
+    <div class="estado-datos" id="estadoDatos">Verificando fuente de datos...</div>
+  </header>
+
+  <main>
+    <section class="radar-caja">
+      <canvas id="radar" tabindex="0" aria-label="Radar de zonas con denuncias"></canvas>
+      <div class="barra">
+        <select id="vel" aria-label="Velocidad de desplazamiento">
+          <option value="1.4">Caminando (1,4 m/s)</option>
+          <option value="14" selected>Rápido (x10)</option>
+          <option value="42">Muy rápido (x30)</option>
+        </select>
+        <select id="turnoSim" aria-label="Horario simulado">
+          <option value="9">Horario: Mañana</option>
+          <option value="15">Horario: Tarde</option>
+          <option value="21" selected>Horario: Noche (Crítico)</option>
+          <option value="2">Horario: Madrugada</option>
+        </select>
+        <button id="toggleVoz" type="button">🔇 Voz Hermes: OFF</button>
+        <button id="reiniciar" type="button">Reiniciar</button>
+      </div>
+    </section>
+
+    <aside class="lateral">
+      <div class="tarjeta">
+        <h2>Nivel de riesgo a 150 m</h2>
+        <div class="nivel-fila">
+          <div class="nivel"><b id="nivel">-</b><span class="gris" id="nivelDetalle"></span></div>
+        </div>
+      </div>
+
+      <div class="tarjeta">
+        <h2>Categorías monitoreadas</h2>
+        <div class="leyenda" id="leyenda"></div>
+      </div>
+
+      <div class="tarjeta">
+        <h2>Zonas cercanas (hasta 300 m)</h2>
+        <ul id="cercanos"></ul>
+      </div>
+
+      <div class="tarjeta">
+        <h2>Historial de alertas</h2>
+        <ul id="avisos"><li class="vacio">Aún no hay avisos. Camina hacia una zona marcada.</li></ul>
+      </div>
+
+      <div class="tarjeta fuente" id="fuente"></div>
+    </aside>
+  </main>
+
+  <script src="puntos.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
