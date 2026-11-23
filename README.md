@@ -1,30 +1,36 @@
-# 🛡️ ALERTA VES · Camino-Seguro-VES
+# Camino Seguro VES — Project Hermes
 
-Sistema preventivo de alerta ciudadana georreferenciada para **Villa El Salvador (Lima, Perú)**. Combina datos reales normalizados de la **SIDPOL** (`data/delitos.db` con 2,264 nodos georreferenciados) con cartografía vectorial interactiva **2D y 3D** (**MapLibre GL + OpenFreeMap**, sin necesidad de API Key) y el asistente de voz **Hermes**.
-
----
-
-## 🚀 Características principales
-
-* **Mapa interactivo 2D y 3D en tiempo real:** Visualiza las calles y manzanas reales de Villa El Salvador en modo oscuro usando **OpenFreeMap**, con alternancia instantánea entre vista plana (**2D**) y perspectiva con edificios extruidos (**3D**).
-* **Base de datos real SIDPOL VES:** Procesa y agrupa espacialmente los registros de `data/delitos.db` mediante `exportar_puntos.py` para proyectar 2,264 nodos de riesgo clasificados por categoría delictiva.
-* **Geofencing y cálculo geodésico (Haversine):** Evalúa el nivel de riesgo (*BAJO, MEDIO, ALTO*) dentro de un radio dinámico de **150 metros** alrededor del ciudadano mediante cuadrículas espaciales (`0.005°`) con caché LRU.
-* **Asistente de voz Hermes y reporte ciudadano:** Emite alertas auditivas preventivas al ingresar a zonas críticas según el horario (*mañana, tarde, noche o madrugada*), permite escuchar un resumen completo del entorno y registrar reportes comunitarios en vivo.
+Plataforma integral de prevención ciudadana y alerta temprana georreferenciada para **Villa El Salvador (Lima, Perú)**. Combina una **aplicación móvil nativa (ALERTA VES)** con monitoreo GPS en tiempo real, base de datos local offline (**SQLite**), validación automática de evidencias mediante **Inteligencia Artificial (Teachable Machine / TensorFlow.js)** y sincronización colaborativa en la nube con **Supabase**.
 
 ---
 
-## 📂 Estructura del repositorio
+## Arquitectura del Proyecto
 
 ```text
-Camino-Seguro-VES/
-├── data/
-│   ├── delitos.db           # Base de datos SQLite normalizada (SIDPOL Villa El Salvador)
-│   └── delitos_ves.json     # Respaldo estructurado en formato JSON
-├── crear_bd.py              # Script de construcción de la base de datos SQLite
-├── normalizar_bd.py         # Limpieza y normalización geoespacial de registros
-├── exportar_puntos.py       # Exportador de 2,264 nodos reales desde data/delitos.db hacia puntos.js
-├── puntos.js                # Nodos georreferenciados listos para el mapa web
-├── index.html               # Interfaz principal ALERTA VES (controles GPS, 2D/3D, reporte y resumen)
-├── styles.css               # Diseño oscuro de alto contraste estilo móvil
-├── app.js                   # Motor espacial, geofencing, renderizado MapLibre 2D/3D y voz Hermes
-└── README.md                # Documentación del proyecto
+PROJEC-HERMES/
+├── alerta-ves/                   # Aplicación móvil nativa (React Native + Expo)
+│   ├── assets/                   # Íconos, splash screen y base SQLite local (delitos_ves.db)
+│   ├── modules/                  # Módulos nativos personalizados (Audio / Alertas Android)
+│   ├── src/
+│   │   ├── Mapa.js               # Renderizado cartográfico con MapLibre GL
+│   │   ├── Radar.js              # Motor de proximidad y detección de zonas de riesgo
+│   │   ├── motor.js              # Cálculo de distancias, geocercas y evaluación de riesgo
+│   │   ├── Clasificador.js       # Clasificación de evidencias fotográficas con IA
+│   │   ├── PanelReportar.js      # Interfaz de reporte ciudadano con validación IA
+│   │   ├── supabase.js           # Cliente y sincronización en tiempo real con Supabase
+│   │   ├── config.js             # Credenciales públicas, umbrales y URL del modelo IA
+│   │   ├── alertas.js            # Gestión de notificaciones y alertas tempranas
+│   │   ├── hermes.js             # Orquestación principal del sistema Hermes
+│   │   ├── Politicas.js          # Términos de uso y privacidad ciudadana
+│   │   └── ajustes.js            # Preferencias y configuración local del usuario
+│   ├── App.js                    # Punto de entrada y proveedor de base de datos SQLite
+│   ├── metro.config.js           # Configuración de empaquetado de recursos (.db)
+│   └── eas.json                  # Perfiles de compilación APK (EAS Build)
+├── build_db.py                   # Construcción y poblamiento de la base SQLite (delitos_ves.db)
+├── agregar_referencias.py        # Carga de puntos de referencia y zonas críticas de VES
+├── alerta_demo.py                # Script de simulación y pruebas de alertas geoespaciales
+├── delitos_ves.db                # Base de datos geoespacial offline de incidencias
+├── schema.sql                    # Estructura de tablas geoespaciales para Supabase
+├── supabase_setup.sql            # Políticas de seguridad RLS y funciones en Supabase
+├── supabase_demo_seed.sql        # Datos iniciales de demostración en la nube
+└── README.md                     # Documentación oficial del proyecto
