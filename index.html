@@ -3,23 +3,37 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Camino Seguro VES · Alerta Ciudadana</title>
+  <title>ALERTA VES · Camino Seguro Villa El Salvador</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" crossorigin="">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <div class="marca">
-      <h1>Camino Seguro VES <span class="badge">Hackatón · v2</span></h1>
-      <p>Haz clic en el radar o usa las flechas del teclado para simular tu recorrido en Villa El Salvador.</p>
+    <div class="pills-top">
+      <span class="pill-marca">ALERTA VES</span>
+      <span class="pill-riesgo" id="pillRiesgo">RIESGO BAJO</span>
+      <span class="pill-info" id="pillComunidad">Comunidad: 0</span>
+      <span class="pill-info" id="pillAudio">Sin audífonos</span>
+      <span class="estado-datos" id="estadoDatos">Cargando datos...</span>
     </div>
-    <div class="estado-datos" id="estadoDatos">Verificando fuente de datos...</div>
   </header>
 
   <main>
-    <section class="radar-caja">
-      <canvas id="radar" tabindex="0" aria-label="Radar de zonas con denuncias"></canvas>
-      <div class="barra">
-        <select id="vel" aria-label="Velocidad de desplazamiento">
+    <section class="mapa-caja">
+      <div class="mapa-contenedor" id="cajaMapa">
+        <div id="mapa"></div>
+        <button class="btn-flotante-izq" id="btnReportar" type="button">Reportar autoridad</button>
+        <div class="controles-der">
+          <button class="btn-circulo" id="btnGps" type="button" title="Centrar en mi ubicación">GPS</button>
+          <button class="btn-circulo" id="btn3d" type="button" title="Alternar vista 2D / 3D">3D</button>
+          <button class="btn-circulo" id="btnZoomIn" type="button" title="Acercar">+</button>
+          <button class="btn-circulo" id="btnZoomOut" type="button" title="Alejar">−</button>
+          <button class="btn-circulo" id="btnAjustes" type="button" title="Ajustes de simulación">Aj.</button>
+        </div>
+      </div>
+
+      <div class="barra" id="barraSimulacion">
+        <select id="vel" aria-label="Velocidad de simulación">
           <option value="1.4">Caminando (1,4 m/s)</option>
           <option value="14" selected>Rápido (x10)</option>
           <option value="42">Muy rápido (x30)</option>
@@ -30,39 +44,62 @@
           <option value="21" selected>Horario: Noche (Crítico)</option>
           <option value="2">Horario: Madrugada</option>
         </select>
-        <button id="toggleVoz" type="button">🔇 Voz Hermes: OFF</button>
+        <button id="toggleVoz" type="button">🔇 Hermes: OFF</button>
         <button id="reiniciar" type="button">Reiniciar</button>
       </div>
     </section>
 
     <aside class="lateral">
       <div class="tarjeta">
-        <h2>Nivel de riesgo a 150 m</h2>
-        <div class="nivel-fila">
-          <div class="nivel"><b id="nivel">-</b><span class="gris" id="nivelDetalle"></span></div>
-        </div>
+        <h2>RIESGO EN TU ZONA (150 m)</h2>
+        <div class="nivel-grande"><span id="nivel">BAJO</span><span class="nivel-detalle" id="nivelDetalle"></span></div>
+
+        <div class="subtitulo-lista">Lo más cercano</div>
+        <ul id="cercanos"></ul>
+
+        <p class="aviso-legal">
+          Toca una zona en el mapa para ver el detalle. Información basada en denuncias; no garantiza tu seguridad.
+        </p>
+
+        <button class="btn-resumen" id="btnResumen" type="button">Escuchar resumen de seguridad</button>
       </div>
 
       <div class="tarjeta">
-        <h2>Categorías monitoreadas</h2>
+        <h2>Categorías SIDPOL</h2>
         <div class="leyenda" id="leyenda"></div>
       </div>
 
       <div class="tarjeta">
-        <h2>Zonas cercanas (hasta 300 m)</h2>
-        <ul id="cercanos"></ul>
-      </div>
-
-      <div class="tarjeta">
-        <h2>Historial de alertas</h2>
-        <ul id="avisos"><li class="vacio">Aún no hay avisos. Camina hacia una zona marcada.</li></ul>
+        <h2>Alertas recientes en ruta</h2>
+        <ul id="avisos"><li class="vacio">Haz clic en cualquier calle del mapa para caminar.</li></ul>
       </div>
 
       <div class="tarjeta fuente" id="fuente"></div>
     </aside>
   </main>
 
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" crossorigin=""></script>
   <script src="puntos.js"></script>
   <script src="app.js"></script>
+  <script>
+    // Conecta los botones visuales extra (Aj. y Sin audífonos)
+    const btnAjustes = document.getElementById('btnAjustes');
+    const barraSim = document.getElementById('barraSimulacion');
+    if (btnAjustes && barraSim) {
+      btnAjustes.onclick = () => {
+        barraSim.style.display = barraSim.style.display === 'none' ? 'flex' : 'none';
+      };
+    }
+    const pillAudio = document.getElementById('pillAudio');
+    if (pillAudio) {
+      pillAudio.style.cursor = 'pointer';
+      pillAudio.onclick = () => {
+        const conAudifonos = pillAudio.textContent.includes('Con');
+        pillAudio.textContent = conAudifonos ? 'Sin audífonos' : 'Con audífonos';
+        pillAudio.style.borderColor = conAudifonos ? '' : '#00E5FF';
+        pillAudio.style.color = conAudifonos ? '' : '#00E5FF';
+      };
+    }
+  </script>
 </body>
 </html>
