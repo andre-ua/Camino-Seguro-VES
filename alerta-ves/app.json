@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "Altoque",
+    "slug": "alerta-ves",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.andreeeeetc.alertaves",
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-sqlite",
+      "@maplibre/maplibre-react-native",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Alerta VES usa tu ubicación para avisarte cuando estés cerca de zonas con denuncias.",
+          "isAndroidBackgroundLocationEnabled": true,
+          "isAndroidForegroundServiceEnabled": true
+        }
+      ],
+      "expo-notifications",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Altoque usa la cámara para que la IA valide los reportes de patrullas, serenazgo y ambulancias. La foto no se guarda.",
+          "photosPermission": "Altoque lee la foto que eliges para validarla con IA. La foto no se guarda."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ea1e8979-d0c1-42a2-991c-b67deda13610"
+      }
+    }
+  }
+}
